@@ -1,0 +1,57 @@
+version: '3.8'
+
+services:
+  
+  envoy:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    networks:
+      - envoymesh
+    expose:
+      - '8080'
+      - '8443'
+      - '8001'
+    ports:
+      - '8080:8080'
+      - '8443:8443'
+      - '8001:8001'
+    command: /usr/local/bin/envoy -c /etc/envoy.yaml --service-cluster front-proxy --log-level critical
+  
+  admin-service:
+    build:
+      context: ./admin-service
+      dockerfile: Dockerfile.compose
+    container_name: admin-service
+    command: nest start admin-service --watch
+    networks:
+      envoymesh:
+        aliases:
+          - admin-service
+    env_file:
+      - ./admin-service/.env.compose
+    volumes:
+      - ./admin-service/config:/app/config
+      - ./admin-service/types:/app/types
+      - ./admin-service/proto:/app/proto
+      - ./admin-service/src:/app/src
+  
+  authentication-service:
+    build:
+      context: ./authentication-service
+      dockerfile: Dockerfile.compose
+    container_name: authentication-service
+    command: nest start authentication-service --watch
+    networks:
+      envoymesh:
+        aliases:
+          - authentication-service
+    env_file:
+      - ./authentication-service/.env.compose
+    volumes:
+      - ./authentication-service/types:/app/types
+      - ./authentication-service/proto:/app/proto
+      - ./authentication-service/src:/app/src
+
+networks:
+  envoymesh: {}

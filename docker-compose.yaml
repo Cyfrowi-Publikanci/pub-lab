@@ -52,6 +52,23 @@ services:
       - ./authentication-service/types:/app/types
       - ./authentication-service/proto:/app/proto
       - ./authentication-service/src:/app/src
+  
+  publications-service:
+    build:
+      context: ./publications-service
+      dockerfile: Dockerfile.compose
+    container_name: publications-service
+    command: nest start publications-service --watch
+    networks:
+      envoymesh:
+        aliases:
+          - publications-service
+    env_file:
+      - ./publications-service/.env.compose
+    volumes:
+      - ./publications-service/types:/app/types
+      - ./publications-service/proto:/app/proto
+      - ./publications-service/src:/app/src
 
 networks:
   envoymesh: {}

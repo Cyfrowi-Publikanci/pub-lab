@@ -22,6 +22,10 @@ static_resources:
                         prefix: "/admin.UsersService"
                       route:
                         cluster: admin-service
+                    - match:
+                        prefix: "/publications.PublicationsService"
+                      route:
+                        cluster: publications-service
                   cors:
                     allow_origin_string_match:
                       - safe_regex:
@@ -65,3 +69,18 @@ static_resources:
                   socket_address:
                     address: authentication-service
                     port_value: 3002
+    
+    - name: publications-service
+      connect_timeout: 0.25s
+      type: STRICT_DNS
+      lb_policy: ROUND_ROBIN
+      http2_protocol_options: {}
+      load_assignment:
+        cluster_name: publications-service
+        endpoints:
+          - lb_endpoints:
+            - endpoint:
+                address:
+                  socket_address:
+                    address: publications-service
+                    port_value: 3003

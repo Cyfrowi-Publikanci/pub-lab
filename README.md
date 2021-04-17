@@ -3,6 +3,7 @@
 * [Local development](https://github.com/Cyfrowi-Publikanci/pub-lab#local-development)
 * [Access service](https://github.com/Cyfrowi-Publikanci/pub-lab#access-service)
 * [Envoy](https://github.com/Cyfrowi-Publikanci/pub-lab#envoy)
+* [Databases](https://github.com/Cyfrowi-Publikanci/pub-lab#databases)
 
 <br/>
 
@@ -133,3 +134,8 @@ Choose protofiles form apropriate services.
                     address: admin-service
                     port_value: 3001
 ```
+## Databases:
+
+MongoDB Atlas:
+* Setup free cluster https://www.youtube.com/watch?v=KKyag6t98g8
+* Setup .env and .env.compose in each project: SERVICE_\<service_name>_DATABASE_URI=mongodb+srv://\<user>:\<password>@<project>.xvmnc.mongodb.net/\<db_name>?retryWrites=true&w=majority

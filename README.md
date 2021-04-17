@@ -134,6 +134,20 @@ Choose protofiles form apropriate services.
                     address: admin-service
                     port_value: 3001
 ```
+
+### Example of unprotected endpoint:
+
+```bash
+- match:
+    prefix: "/authentication.AuthService/loginByEmail"
+  route:
+    cluster: authentication-service
+  typed_per_filter_config:
+    envoy.filters.http.ext_authz:
+      '@type': type.googleapis.com/envoy.extensions.filters.http.ext_authz.v3.ExtAuthzPerRoute
+      disabled: true
+```
+
 ## Databases:
 
 MongoDB Atlas:

@@ -26,6 +26,30 @@ static_resources:
                         prefix: "/publications.PublicationsService"
                       route:
                         cluster: publications-service
+                      typed_per_filter_config:
+                        envoy.filters.http.ext_authz:
+                          '@type': type.googleapis.com/envoy.extensions.filters.http.ext_authz.v3.ExtAuthzPerRoute
+                          disabled: true
+                    - match:
+                        prefix: "/authentication.AuthService/loginByEmail"
+                      route:
+                        cluster: authentication-service
+                      typed_per_filter_config:
+                        envoy.filters.http.ext_authz:
+                          '@type': type.googleapis.com/envoy.extensions.filters.http.ext_authz.v3.ExtAuthzPerRoute
+                          disabled: true
+                    - match:
+                        prefix: "/authentication.AuthService/registerByEmail"
+                      route:
+                        cluster: authentication-service
+                      typed_per_filter_config:
+                        envoy.filters.http.ext_authz:
+                          '@type': type.googleapis.com/envoy.extensions.filters.http.ext_authz.v3.ExtAuthzPerRoute
+                          disabled: true
+                    - match:
+                        prefix: "/authentication.UsersService"
+                      route:
+                        cluster: authentication-service
                   cors:
                     allow_origin_string_match:
                       - safe_regex:
@@ -37,8 +61,16 @@ static_resources:
                     expose_headers: grpc-status,grpc-message
             http_filters:
               - name: envoy.filters.http.grpc_web
+              - name: envoy.http.ext_authz
+                typed_config:
+                  '@type': type.googleapis.com/envoy.extensions.filters.http.ext_authz.v3.ExtAuthz
+                  grpc_service:
+                    envoy_grpc:
+                      cluster_name: authentication-service
+                    timeout: 2s
+                  transport_api_version: V3
               - name: envoy.filters.http.router
-    
+
   clusters:
     - name: admin-service
       connect_timeout: 0.25s

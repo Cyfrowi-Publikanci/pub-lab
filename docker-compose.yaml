@@ -49,6 +49,7 @@ services:
     env_file:
       - ./authentication-service/.env.compose
     volumes:
+      - ./authentication-service/libs:/app/libs
       - ./authentication-service/types:/app/types
       - ./authentication-service/proto:/app/proto
       - ./authentication-service/src:/app/src
@@ -66,6 +67,7 @@ services:
     env_file:
       - ./publications-service/.env.compose
     volumes:
+      - ./publications-service/config:/app/config
       - ./publications-service/types:/app/types
       - ./publications-service/proto:/app/proto
       - ./publications-service/src:/app/src

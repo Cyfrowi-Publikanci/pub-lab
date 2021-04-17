@@ -5,7 +5,7 @@ services:
   envoy:
     build:
       context: .
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile.envoy
     networks:
       - envoymesh
     expose:
@@ -71,6 +71,30 @@ services:
       - ./publications-service/types:/app/types
       - ./publications-service/proto:/app/proto
       - ./publications-service/src:/app/src
+
+  mongo-publab:
+    container_name: mongo-publab
+    build:
+      context: .
+      dockerfile: Dockerfile.mongo
+    networks:
+      envoymesh:
+        aliases:
+          - mongo-publab
+    environment:
+      - REPLICA_SET_NAME=mongo-rs
+    expose:
+      - '27001'
+      - '27002'
+      - '27003'
+      - '27017'
+    ports:
+      - '27001:27001'
+      - '27002:27002'
+      - '27003:27003'
+      - '27017:27017'
+    volumes:
+      - /data/mongodb:/data
 
 networks:
   envoymesh: {}

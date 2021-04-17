@@ -153,3 +153,7 @@ Choose protofiles form apropriate services.
 MongoDB Atlas:
 * Setup free cluster https://www.youtube.com/watch?v=KKyag6t98g8
 * Setup .env and .env.compose in each project: SERVICE_\<service_name>_DATABASE_URI=mongodb+srv://\<user>:\<password>@<project>.xvmnc.mongodb.net/\<db_name>?retryWrites=true&w=majority
+
+
+Local replica set:
+* Setup .env and .env.compose in each project: SERVICE_\<service_name>_DATABASE_URI=mongodb://mongo-publab:27001/db

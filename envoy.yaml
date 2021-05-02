@@ -16,7 +16,8 @@ static_resources:
               name: local_route
               virtual_hosts:
                 - name: backend
-                  domains: ["*"]
+                  domains:
+                    - '*'
                   routes:
                     - match:
                         prefix: "/admin.UsersService"
@@ -61,6 +62,7 @@ static_resources:
                     expose_headers: grpc-status,grpc-message
             http_filters:
               - name: envoy.filters.http.grpc_web
+              - name: envoy.filters.http.cors
               - name: envoy.http.ext_authz
                 typed_config:
                   '@type': type.googleapis.com/envoy.extensions.filters.http.ext_authz.v3.ExtAuthz

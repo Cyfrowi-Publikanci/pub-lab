@@ -96,5 +96,16 @@ services:
     volumes:
       - /data/mongodb:/data
 
+  rabbit-mq:
+    image: rabbitmq:3-management-alpine
+    container_name: rabbit-mq
+    ports:
+      - 5672:5672
+      - 15672:15672
+    networks:
+      envoymesh:
+        aliases:
+          - mongo-publab
+
 networks:
   envoymesh: {}

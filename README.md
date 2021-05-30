@@ -4,6 +4,8 @@
 * [Access service](https://github.com/Cyfrowi-Publikanci/pub-lab#access-service)
 * [Envoy](https://github.com/Cyfrowi-Publikanci/pub-lab#envoy)
 * [Databases](https://github.com/Cyfrowi-Publikanci/pub-lab#databases)
+* [Kibana](https://github.com/Cyfrowi-Publikanci/pub-lab#kibana)
+* [RabbitMQ](https://github.com/Cyfrowi-Publikanci/pub-lab#rabbitmQ)
 
 <br/>
 
@@ -157,3 +159,14 @@ MongoDB Atlas:
 
 Local replica set:
 * Setup .env and .env.compose in each project: SERVICE_\<service_name>_DATABASE_URI=mongodb://mongo-publab:27001/db
+
+## Kibana
+
+http://localhost:5601/app/kibana#/home
+
+## RabbitMQ
+
+http://localhost:15672/
+
+Username: guest
+Password: guest

@@ -47,7 +47,6 @@ services:
     build:
       context: ./authentication-service
       dockerfile: Dockerfile.compose
-    container_name: authentication-service
     command: nest start authentication-service --watch
     depends_on:
       - rabbit-mq

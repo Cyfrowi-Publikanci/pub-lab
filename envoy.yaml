@@ -56,6 +56,18 @@ static_resources:
                           '@type': type.googleapis.com/envoy.extensions.filters.http.ext_authz.v3.ExtAuthzPerRoute
                           disabled: true
                     - match:
+                        prefix: "/authentication.AuthService/buyPremium"
+                      route:
+                        cluster: authentication-service
+                      typed_per_filter_config:
+                        envoy.filters.http.ext_authz:
+                          '@type': type.googleapis.com/envoy.extensions.filters.http.ext_authz.v3.ExtAuthzPerRoute
+                          disabled: true
+                    - match:
+                        prefix: "/authentication.AuthService"
+                      route:
+                        cluster: authentication-service
+                    - match:
                         prefix: "/authentication.UsersService"
                       route:
                         cluster: authentication-service

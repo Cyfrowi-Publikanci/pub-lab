@@ -37,11 +37,6 @@ services:
       - ./admin-service/types:/app/types
       - ./admin-service/proto:/app/proto
       - ./admin-service/src:/app/src
-    logging:
-      driver: gelf
-      options:
-        gelf-address: "udp://localhost:12201"
-        tag: "pub_lab_kibana"
 
   authentication-service:
     build:
@@ -61,12 +56,7 @@ services:
       - ./authentication-service/types:/app/types
       - ./authentication-service/proto:/app/proto
       - ./authentication-service/src:/app/src
-    logging:
-      driver: gelf
-      options:
-        gelf-address: "udp://localhost:12201"
-        tag: "pub_lab_kibana"
-
+ 
   publications-service:
     build:
       context: ./publications-service
@@ -84,35 +74,30 @@ services:
       - ./publications-service/types:/app/types
       - ./publications-service/proto:/app/proto
       - ./publications-service/src:/app/src
-    logging:
-      driver: gelf
-      options:
-        gelf-address: "udp://localhost:12201"
-        tag: "pub_lab_kibana"
 
-  mongo-publab:
-    container_name: mongo-publab
-    build:
-      context: .
-      dockerfile: Dockerfile.mongo
-    networks:
-      envoymesh:
-        aliases:
-          - mongo-publab
-    environment:
-      - REPLICA_SET_NAME=mongo-rs
-    expose:
-      - '27001'
-      - '27002'
-      - '27003'
-      - '27017'
-    ports:
-      - '27001:27001'
-      - '27002:27002'
-      - '27003:27003'
-      - '27017:27017'
-    volumes:
-      - /data/mongodb:/data
+  # mongo-publab:
+  #   container_name: mongo-publab
+  #   build:
+  #     context: .
+  #     dockerfile: Dockerfile.mongo
+  #   networks:
+  #     envoymesh:
+  #       aliases:
+  #         - mongo-publab
+  #   environment:
+  #     - REPLICA_SET_NAME=mongo-rs
+  #   expose:
+  #     - '27001'
+  #     - '27002'
+  #     - '27003'
+  #     - '27017'
+  #   ports:
+  #     - '27001:27001'
+  #     - '27002:27002'
+  #     - '27003:27003'
+  #     - '27017:27017'
+  #   volumes:
+  #     - /data/mongodb:/data
 
   rabbit-mq:
     image: rabbitmq:3-management-alpine
@@ -124,41 +109,6 @@ services:
       envoymesh:
         aliases:
           - rabbit-mq
-
-  elasticsearch:
-    container_name: elasticsearch
-    image: docker.elastic.co/elasticsearch/elasticsearch:7.6.2
-    environment:
-      - discovery.type=single-node
-    ports:
-      - 9200:9200
-
-  logstash:
-    container_name: logstash
-    image: docker.elastic.co/logstash/logstash:7.6.2
-    links:
-      - elasticsearch
-    volumes:
-      - .:/etc/logstash
-    command: logstash -f /etc/logstash/logstash.conf
-    ports:
-      - 12201:12201/udp
-    depends_on:
-      - elasticsearch
-
-  kibana:
-    container_name: kibana
-    image: docker.elastic.co/kibana/kibana:7.6.2
-    ports:
-      - 5601:5601
-    depends_on:
-      - elasticsearch
-      - logstash
-    logging:
-      driver: gelf
-      options:
-        gelf-address: "udp://localhost:12201"
-        tag: "pub_lab_kibana"
 
 networks:
   envoymesh: {}
